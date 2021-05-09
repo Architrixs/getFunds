@@ -13,4 +13,4 @@
 
 ![](https://github.com/Architrixs/getFunds/blob/main/example_output_files.png)
 
-![](https://github.com/Architrixs/getFunds/blob/main/getFunds%20usage.png)
+![](https://github.com/Architrixs/getFunds/blob/main/example_output_files%201.png)

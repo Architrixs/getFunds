@@ -24,8 +24,10 @@ def getFunds():
     if len(sys.argv) > 1:
         file_name = sys.argv[1]
         output_file_name = sys.argv[-1]
+        
     with open(file_name, 'r') as file:
         fund_codes = file.readlines()
+        
     print("Getting ISIN codes from file...")
     isin_codes=[i.strip() for i in fund_codes]
 
@@ -41,9 +43,10 @@ def getFunds():
 
     print("Getting Prices...\nPlease Wait")
     for i in range(len(isin_codes)):
-        # From www.boursorama.com
+        # From markets.ft.com
         if sys.argv[-2] =='-ft':
             res = requests.get(url+ isin_codes[i] + ':EUR', headers={'User-Agent': 'Mozilla/5.0'})
+        # From www.boursorama.com
         else:
             res = requests.get(url+ isin_codes[i], headers={'User-Agent': 'Mozilla/5.0'})
         
@@ -54,7 +57,6 @@ def getFunds():
             print("There was a problem: %s" % (exc))
         
         #making soup
-
         soup_res = bs4.BeautifulSoup(res.text, 'html.parser')
         
         try:

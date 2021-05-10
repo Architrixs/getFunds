@@ -34,7 +34,7 @@ def getFunds():
     if sys.argv[-2] =='-ft':
         url = 'https://markets.ft.com/data/funds/tearsheet/summary?s='
     else:
-        url = 'https://www.boursorama.com/bourse/opcvm/recherche/?fastFundSearch[code]='
+        url = 'https://www.boursorama.com/bourse/opcvm/cours/'
 
 
     #print(isin_codes)
@@ -43,12 +43,7 @@ def getFunds():
 
     print("Getting Prices...\nPlease Wait")
     for i in range(len(isin_codes)):
-        # From markets.ft.com
-        if sys.argv[-2] =='-ft':
-            res = requests.get(url+ isin_codes[i] + ':EUR', headers={'User-Agent': 'Mozilla/5.0'})
-        # From www.boursorama.com
-        else:
-            res = requests.get(url+ isin_codes[i], headers={'User-Agent': 'Mozilla/5.0'})
+        res = requests.get(url+ isin_codes[i], headers={'User-Agent': 'Mozilla/5.0'})
         
         #Checking for Bad download
         try:
@@ -68,11 +63,11 @@ def getFunds():
                 price_list.append(price.text.replace(',', ''))
 
             else:
-                name = soup_res.find_all('a',{'class' : 'c-link c-link--animated'})
-                price = soup_res.find_all('td',{'class' : 'c-table__cell c-table__cell--dotted'})
-                #print(name[2].text, ''.join(price[1].text.split()))
-                name_list.append(name[2].text)
-                price_list.append(''.join(price[1].text.split()))
+                name = soup_res.find('a',{'class' : 'c-faceplate__company-link'})
+                price = soup_res.find('span',{'class' : 'c-instrument c-instrument--last'})
+                
+                name_list.append(name.text.strip())
+                price_list.append(''.join(price.text.split()))
                 
         except:
             name_list.append('NA')
